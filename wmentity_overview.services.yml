@@ -1,0 +1,23 @@
+services:
+    plugin.manager.wmentity_overview_builder:
+        class: Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderManager
+        parent: default_plugin_manager
+        arguments:
+            - '@entity_type.manager'
+            - '@plugin.manager.wmentity_overview_filter_storage'
+
+    plugin.manager.wmentity_overview_filter_storage:
+        class: Drupal\wmentity_overview\FilterStorage\FilterStorageManager
+        parent: default_plugin_manager
+
+    wmentity_overview.collection_route.subscriber:
+        class: Drupal\wmentity_overview\EventSubscriber\CollectionRouteSubscriber
+        arguments:
+            - '@plugin.manager.wmentity_overview_builder'
+        tags: [{ name: event_subscriber }]
+
+    paramconverter.wmentity_overview.overview_builder:
+        class: Drupal\wmentity_overview\ParamConverter\OverviewBuilderConverter
+        arguments:
+            - '@plugin.manager.wmentity_overview_builder'
+        tags: [{ name: paramconverter, priority: 20  }]
