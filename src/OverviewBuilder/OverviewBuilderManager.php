@@ -157,7 +157,7 @@ class OverviewBuilderManager extends DefaultPluginManager
 
         throw new \RuntimeException(sprintf(
             'Could not determine route name of EntityOverview with id \'%s\'. Please add a route_name parameter to the annotation.',
-            $definition['id'],
+            $definition['id']
         ));
     }
 }
