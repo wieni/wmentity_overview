@@ -5,6 +5,7 @@ services:
         arguments:
             - '@entity_type.manager'
             - '@plugin.manager.wmentity_overview_filter_storage'
+            - '@module_handler'
 
     plugin.manager.wmentity_overview_filter_storage:
         class: Drupal\wmentity_overview\FilterStorage\FilterStorageManager

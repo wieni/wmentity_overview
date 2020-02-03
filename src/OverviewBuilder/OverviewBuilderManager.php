@@ -43,20 +43,30 @@ class OverviewBuilderManager extends DefaultPluginManager
     }
 
     /** @return OverviewBuilder[] */
-    public function getAlternativesByFilters(OverviewBuilder $definition): array
+    public function getAlternatives(OverviewBuilder $definition): array
+    {
+        $filterStorage = $this->filterStorageManager->createInstance($definition->getFilterStorageId());
+        $alternatives = $this->getAlternativesByFilters($definition, $filterStorage->getAll());
+
+        $this->moduleHandler->alter('entity_overview_alternatives', $alternatives, $definition);
+
+        return $alternatives;
+    }
+
+    /** @return OverviewBuilder[] */
+    public function getAlternativesByFilters(OverviewBuilder $definition, array $filters): array
     {
         $alternatives = [];
-        $filterStorage = $this->filterStorageManager->createInstance($definition->getFilterStorageId());
         $possibleAlternatives = array_diff_key(
             $this->getDefinitionsByEntityType($definition->getEntityTypeId()),
             [$definition->getId() => $definition]
         );
 
         foreach ($possibleAlternatives as $alternative) {
-            $missingFilters = array_diff_assoc($alternative->getFilters(), $filterStorage->getAll());
+            $missingFilters = array_diff_assoc($alternative->getFilters(), $filters);
 
             if (empty($missingFilters)) {
-                $alternatives[] = $alternative;
+                $alternatives[$alternative->getId()] = $alternative;
             }
         }
 
@@ -141,10 +151,13 @@ class OverviewBuilderManager extends DefaultPluginManager
     {
         $entityType = $this->entityTypeManager->getDefinition($definition['entity_type']);
 
+        if ($entityType->hasLinkTemplate('collection')) {
+            return sprintf('entity.%s.collection', $entityType->id());
+        }
+
         $map = [
             'node' => 'system.admin_content',
             'taxonomy_term' => 'entity.taxonomy_vocabulary.overview_form',
-            'user' => 'entity.user.collection',
         ];
 
         if (isset($map[$entityType->id()])) {

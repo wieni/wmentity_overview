@@ -188,12 +188,13 @@ The default storage method is `query`, but this can be changed by adding
 a `filter_storage` parameter to `@OverviewBuilder` annotations.
 
 ### Hooks and events
-- One hook is provided, `hook_entity_overview_alter`. This hook is only
-  called when using overrides or when using the `_entity_overview`
-  default in routes. An event equivalent to the hook is also provided:
-  [`WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER`](src/WmEntityOverviewEvents.php)
+#### `hook_entity_overview_alter`
+This hook is only called when using overrides or when using the
+`_entity_overview` default in routes. An event equivalent to the hook is
+also provided:
+[`WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER`](src/WmEntityOverviewEvents.php)
 
-#### Examples
+##### Examples
 ```php
 <?php
 
@@ -240,6 +241,70 @@ class EntityOverviewSubscriber implements EventSubscriberInterface
 }
 ```
 
+#### `hook_entity_overview_alternatives_alter`
+This hook is only called in the
+[`OverviewBuilderManager::getAlternatives`](src/OverviewBuilder/OverviewBuilderManager.php)
+method. An event equivalent to the hook is also provided:
+[`WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTERNATIVES_ALTER`](src/WmEntityOverviewEvents.php)
+
+#### Example
+```php
+<?php
+
+namespace Drupal\yourmodule\EventSubscriber;
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\wmentity_overview\Event\EntityOverviewAlternativesAlterEvent;
+use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderManager;
+use Drupal\wmentity_overview\WmEntityOverviewEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class EntityOverviewAlternativesSubscriber implements EventSubscriberInterface
+{
+    /** @var OverviewBuilderManager */
+    protected $overviewBuilders;
+    /** @var RouteMatchInterface */
+    protected $routeMatch;
+
+    public function __construct(
+        OverviewBuilderManager $overviewBuilders,
+        RouteMatchInterface $routeMatch
+    ) {
+        $this->overviewBuilders = $overviewBuilders;
+        $this->routeMatch = $routeMatch;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        $events[WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTERNATIVES_ALTER][] = ['onTaxonomyAlternativesAlter'];
+
+        return $events;
+    }
+
+    /**
+     * Since taxonomy has a per-bundle overview, we get the bundle from
+     * the route parameters and use it to add more possible alternatives.
+     */
+    public function onTaxonomyAlternativesAlter(EntityOverviewAlternativesAlterEvent $event): void
+    {
+        if (!$vocabulary = $this->routeMatch->getParameter('taxonomy_vocabulary')) {
+            return;
+        }
+
+        if ($event->getDefinition()->getEntityTypeId() !== 'taxonomy_term') {
+            return;
+        }
+
+        $filters = ['vid' => $vocabulary->id()];
+        $alternatives = array_merge(
+            $event->getAlternatives(),
+            $this->overviewBuilders->getAlternativesByFilters($event->getDefinition(), $filters)
+        );
+
+        $event->setAlternatives($alternatives);
+    }
+}
+```
 ## Changelog
 All notable changes to this project will be documented in the
 [CHANGELOG](CHANGELOG.md) file.

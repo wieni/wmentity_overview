@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-02-02
+### Added
+- Add entity overview alternatives hook & event
+- Add getAlternatives method to OverviewBuilderManager
+
+### Fixed
+- Fix issue where hook is not called, only event
+
 ## [1.0.2] - 2020-02-02
 ### Fixed
 - Remove PHP 7.3 syntax
