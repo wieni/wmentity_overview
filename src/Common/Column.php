@@ -13,19 +13,19 @@ class Column implements ColumnInterface
     protected $label;
     /** @var bool */
     protected $sortable;
-    /** @var string */
-    protected $sortDirection;
+    /** @var string|null */
+    protected $defaultSortDirection;
 
     public function __construct(
         string $name,
         $label = null,
         bool $sortable = true,
-        string $sortDirection = TableSort::DESC
+        ?string $defaultSortDirection = null
     ) {
         $this->name = $name;
         $this->label = $label;
         $this->sortable = $sortable;
-        $this->sortDirection = $sortDirection;
+        $this->defaultSortDirection = $defaultSortDirection;
     }
 
     public function getName(): string
@@ -43,8 +43,8 @@ class Column implements ColumnInterface
         return $this->sortable;
     }
 
-    public function getSortDirection(): string
+    public function getDefaultSortDirection(): ?string
     {
-        return $this->sortDirection;
+        return $this->defaultSortDirection;
     }
 }

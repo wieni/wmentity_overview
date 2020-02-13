@@ -14,5 +14,5 @@ interface ColumnInterface
     public function isSortable(): bool;
 
     /** The default sort direction, if the field is sortable. */
-    public function getSortDirection(): string;
+    public function getDefaultSortDirection(): ?string;
 }

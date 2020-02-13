@@ -59,7 +59,10 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
 
                 if ($this->sort && $column->isSortable()) {
                     $data['field'] = $data['specifier'] = $column->getName();
-                    $data['sort'] = $column->getSortDirection();
+                }
+
+                if ($defaultSort = $column->getDefaultSortDirection()) {
+                    $data['sort'] = $defaultSort;
                 }
 
                 return $data;
