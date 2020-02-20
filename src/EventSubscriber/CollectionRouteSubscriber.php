@@ -43,7 +43,14 @@ class CollectionRouteSubscriber extends RouteSubscriberBase
                 $this->addOverviewBuilder($route, $definition);
             }
 
-            foreach ($definitions[$routeName] ?? [] as $definition) {
+            $definitionsWithoutFilters = array_filter(
+                $definitions[$routeName] ?? [],
+                static function (OverviewBuilder $definition) {
+                    return empty($definition->getFilters());
+                }
+            );
+
+            foreach ($definitionsWithoutFilters as $definition) {
                 $this->addOverviewBuilder($route, $definition);
             }
         }
