@@ -2,6 +2,7 @@
 
 namespace Drupal\wmentity_overview\FilterStorage;
 
+use ArrayIterator;
 use Drupal\Core\Entity\EntityTypeInterface;
 
 abstract class FilterStorageBase implements FilterStorageInterface, \ArrayAccess, \IteratorAggregate
@@ -31,7 +32,7 @@ abstract class FilterStorageBase implements FilterStorageInterface, \ArrayAccess
 
     public function getIterator()
     {
-        return $this->getAll();
+        return new ArrayIterator($this->getAll());
     }
 
     public function setEntityType(EntityTypeInterface $entityType): FilterStorageInterface
