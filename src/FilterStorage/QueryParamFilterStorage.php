@@ -16,6 +16,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class QueryParamFilterStorage extends FilterStorageBase implements ContainerFactoryPluginInterface
 {
+    protected const RESERVED_PARAMS = [
+        /** @see \Drupal\Core\Routing\RedirectDestination */
+        'destination',
+    ];
+
     /** @var RequestStack */
     protected $requestStack;
 
@@ -42,6 +47,10 @@ class QueryParamFilterStorage extends FilterStorageBase implements ContainerFact
 
     public function set(string $key, $value): FilterStorageInterface
     {
+        if (in_array($key, self::RESERVED_PARAMS, true)) {
+            throw new \InvalidArgumentException("'{$key}' is a reserved query parameter and should not be used as filter key.");
+        }
+
         $this->getParams()->set($key, $value);
 
         return $this;
