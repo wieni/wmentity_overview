@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.1] - 2020-02-20
+### Fixed
+- Make sure routes are only overridden with overviews without filters
+- Make sure destination is not used as filter key
+- Fix FilterStorageBase::getIterator not returning an iterator
+
+## [1.2.0] - 2020-02-13
+### Fixed
+- Rename ColumnInterface getSortDirection to getDefaultSortDirection and change the default value to null, so it is actually possible to select a default column for sorting
+
 ## [1.1.0] - 2020-02-02
 ### Added
 - Add entity overview alternatives hook & event
