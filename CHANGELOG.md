@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2020-02-21
+### Fixed
+- Fix header order of draggable overviews
+
 ## [1.2.1] - 2020-02-20
 ### Fixed
 - Make sure routes are only overridden with overviews without filters
