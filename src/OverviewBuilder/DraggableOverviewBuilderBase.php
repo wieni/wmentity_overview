@@ -65,13 +65,13 @@ abstract class DraggableOverviewBuilderBase extends OverviewBuilderBase implemen
 
     public function buildHeader()
     {
-        $header = [];
+        $header = parent::buildHeader();
 
         if (!empty($this->weightKey)) {
             $header['weight'] = $this->t('Weight');
         }
 
-        return $header + parent::buildHeader();
+        return $header;
     }
 
     public function buildRow(EntityInterface $entity)
