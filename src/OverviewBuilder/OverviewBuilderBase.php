@@ -92,7 +92,8 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
             $rows,
             function (array $entities, array $row) {
                 if ($entity = $this->getEntityFromRow($row)) {
-                    $entities[$entity->id()] = $entity;
+                    $key = implode('.', [$entity->id(), $entity->language()->getId()]);
+                    $entities[$key] = $entity;
                 }
 
                 return $entities;
@@ -145,5 +146,35 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
         }
 
         return null;
+    }
+
+    public function render()
+    {
+        $build['table'] = [
+            '#type' => 'table',
+            '#header' => $this->buildHeader(),
+            '#title' => $this->getTitle(),
+            '#rows' => [],
+            '#empty' => $this->t('There are no @label yet.', ['@label' => $this->entityType->getPluralLabel()]),
+            '#cache' => [
+                'contexts' => $this->entityType->getListCacheContexts(),
+                'tags' => $this->entityType->getListCacheTags(),
+            ],
+        ];
+
+        foreach ($this->load() as $key => $entity) {
+            if ($row = $this->buildRow($entity)) {
+                $build['table']['#rows'][$key] = $row;
+            }
+        }
+
+        // Only add the pager if a limit is specified.
+        if ($this->limit) {
+            $build['pager'] = [
+                '#type' => 'pager',
+            ];
+        }
+
+        return $build;
     }
 }

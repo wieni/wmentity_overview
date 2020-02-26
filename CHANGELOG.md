@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] - 2020-02-26
+### Changed
+- Allow multiple translations of the same entity in the same table
+
 ## [1.2.2] - 2020-02-21
 ### Fixed
 - Fix header order of draggable overviews
