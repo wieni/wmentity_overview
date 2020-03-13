@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2020-03-13
+### Fixed
+- Fix issue where site install fails because an entity type referenced in an OverviewBuilder annotation is not yet installed
+
 ## [1.3.0] - 2020-02-26
 ### Changed
 - Allow multiple translations of the same entity in the same table

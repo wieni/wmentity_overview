@@ -137,7 +137,13 @@ class OverviewBuilderManager extends DefaultPluginManager
             }
 
             if ($annotation->isOverride()) {
-                $definition['route_name'] = $this->guessRouteName($definition);
+                try {
+                    $definition['route_name'] = $this->guessRouteName($definition);
+                } catch (\Exception $e) {
+                    // Catch the exception to prevent site install from failing
+                    // when the entity type in question is not yet installed.
+                    watchdog_exception('wmentity_overview', $e);
+                }
             }
 
             $definition['type'] = $annotation->getType();
@@ -147,9 +153,17 @@ class OverviewBuilderManager extends DefaultPluginManager
         return $definitions;
     }
 
-    protected function guessRouteName(array $definition): string
+    protected function guessRouteName(array $definition): ?string
     {
-        $entityType = $this->entityTypeManager->getDefinition($definition['entity_type']);
+        $entityType = $this->entityTypeManager->getDefinition($definition['entity_type'], false);
+
+        if (!$entityType) {
+            throw new \RuntimeException(sprintf(
+                'Entity type with id \'%s\' as referenced in EntityOverview with id \'%s\' does not exist.',
+                $definition['entity_type'],
+                $definition['id']
+            ));
+        }
 
         if ($entityType->hasLinkTemplate('collection')) {
             return sprintf('entity.%s.collection', $entityType->id());
