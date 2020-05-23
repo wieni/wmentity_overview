@@ -73,7 +73,13 @@ abstract class FilterableOverviewBuilderBase extends OverviewBuilderBase impleme
                 continue;
             }
 
+            $value = $this->processFilterValue($key, $value);
             $this->filters->set($key, $value);
         }
+    }
+
+    protected function processFilterValue(string $key, $value)
+    {
+        return $value;
     }
 }
