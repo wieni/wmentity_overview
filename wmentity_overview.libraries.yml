@@ -1,0 +1,5 @@
+filter-form:
+    version: VERSION
+    css:
+        base:
+            css/filter-form.css: {}
