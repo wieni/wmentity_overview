@@ -67,9 +67,7 @@ abstract class FilterableOverviewBuilderBase extends OverviewBuilderBase impleme
 
         foreach ($formState->getValues() as $key => $value) {
             if ($value === null || $value === '') {
-                if ($this->filters->get($key)) {
-                    $this->filters->remove($key);
-                }
+                $this->filters->remove($key);
                 continue;
             }
 
