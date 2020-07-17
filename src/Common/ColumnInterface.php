@@ -15,4 +15,7 @@ interface ColumnInterface
 
     /** The default sort direction, if the field is sortable. */
     public function getDefaultSortDirection(): ?string;
+
+    /** The field that should be used for sorting. */
+    public function getSortField(): ?string;
 }

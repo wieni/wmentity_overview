@@ -15,17 +15,21 @@ class Column implements ColumnInterface
     protected $sortable;
     /** @var string|null */
     protected $defaultSortDirection;
+    /** @var string|null */
+    protected $sortField;
 
     public function __construct(
         string $name,
         $label = null,
         bool $sortable = true,
-        ?string $defaultSortDirection = null
+        ?string $defaultSortDirection = null,
+        ?string $sortField = null
     ) {
         $this->name = $name;
         $this->label = $label;
         $this->sortable = $sortable;
         $this->defaultSortDirection = $defaultSortDirection;
+        $this->sortField = $sortField;
     }
 
     public function getName(): string
@@ -46,5 +50,10 @@ class Column implements ColumnInterface
     public function getDefaultSortDirection(): ?string
     {
         return $this->defaultSortDirection;
+    }
+
+    public function getSortField(): ?string
+    {
+        return $this->sortField ?? $this->getName();
     }
 }
