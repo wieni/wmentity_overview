@@ -3,7 +3,6 @@
 namespace Drupal\wmentity_overview\Common;
 
 use Drupal\Component\Render\MarkupInterface;
-use Drupal\Core\Utility\TableSort;
 
 class Column implements ColumnInterface
 {
@@ -32,9 +31,20 @@ class Column implements ColumnInterface
         $this->sortField = $sortField;
     }
 
+    public static function create(string $name): ColumnInterface
+    {
+        return new static($name);
+    }
+
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setName(string $value): ColumnInterface
+    {
+        $this->name = $value;
+        return $this;
     }
 
     public function getLabel()
@@ -42,9 +52,21 @@ class Column implements ColumnInterface
         return $this->label;
     }
 
+    public function setLabel($value): ColumnInterface
+    {
+        $this->label = $value;
+        return $this;
+    }
+
     public function isSortable(): bool
     {
         return $this->sortable;
+    }
+
+    public function setSortable(bool $value = true): ColumnInterface
+    {
+        $this->sortable = $value;
+        return $this;
     }
 
     public function getDefaultSortDirection(): ?string
@@ -52,8 +74,20 @@ class Column implements ColumnInterface
         return $this->defaultSortDirection;
     }
 
+    public function setDefaultSortDirection(?string $value): ColumnInterface
+    {
+        $this->defaultSortDirection = $value;
+        return $this;
+    }
+
     public function getSortField(): ?string
     {
         return $this->sortField ?? $this->getName();
+    }
+
+    public function setSortField(?string $value): ColumnInterface
+    {
+        $this->sortField = $value;
+        return $this;
     }
 }

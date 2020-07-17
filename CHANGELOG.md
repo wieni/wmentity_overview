@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2020-07-17
+### Added
+- Add option to specify sort field
+- Add column factory method & fluent setters
+
 ## [1.4.1] - 2020-05-28
 ### Fixed
 - Fix clearing filters with falsy values
