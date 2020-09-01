@@ -104,7 +104,7 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
 
     public function getQuery(): SelectInterface
     {
-        $table = $this->entityType->getBaseTable() ?? $this->entityType->getDataTable();
+        $table = $this->entityType->getDataTable() ?? $this->entityType->getBaseTable();
         $alias = $this->entityType->id();
 
         $fields = [

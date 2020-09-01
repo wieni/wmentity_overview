@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.2] - 2020-09-01
+### Fixed
+- Fix broken query when entity type has no data table
+
 ## [1.5.1] - 2020-07-24
 ### Fixed
 - Fix broken query when entity type has no data table
