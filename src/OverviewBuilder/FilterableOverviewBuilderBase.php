@@ -41,8 +41,11 @@ abstract class FilterableOverviewBuilderBase extends OverviewBuilderBase impleme
 
     public function buildFilterForm(array $form, FormStateInterface $formState): array
     {
+        $form['#attached']['library'][] = 'wmentity_overview/filter-form';
+
         $form['actions']['wrapper'] = [
             '#type' => 'container',
+            '#attributes' => ['class' => ['wmentity-overview-filter-form__actions']],
         ];
 
         $form['actions']['wrapper']['submit'] = [

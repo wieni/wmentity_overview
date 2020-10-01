@@ -1,0 +1,42 @@
+.wmentity-overview-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+    border: 1px solid rgba(216, 217, 224, 0.8);
+    border-radius: 2px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wmentity-overview-filter-form .form-item {
+    margin: 0.75rem 0.5rem 0 0; /* LTR */
+}
+
+[dir="rtl"] .wmentity-overview-filter-form .form-item {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+.wmentity-overview-filter-form__actions {
+    margin-left: .5rem; /* LTR */
+}
+
+[dir="rtl"] .wmentity-overview-filter-form__actions {
+    margin-left: 0;
+    margin-right: .5rem;
+}
+
+.wmentity-overview-filter-form__actions .button {
+    margin-bottom: 0;
+}
+
+.wmentity-overview-filter-form__actions .button:last-child {
+    margin-right: 0;
+}
+
+[dir="rtl"] .wmentity-overview-filter-form__actions:last-child {
+    margin-left: 0;
+}
