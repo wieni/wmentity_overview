@@ -1,0 +1,37 @@
+.wmentity-overview-bulk-action-form__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.wmentity-overview-bulk-action-form__form .form-item {
+    margin: 0 0.5rem 0 0; /* LTR */
+}
+
+[dir="rtl"] .wmentity-overview-bulk-action-form__form .form-item {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+.wmentity-overview-bulk-action-form__form .form-wrapper {
+    margin: 0;
+}
+
+.wmentity-overview-bulk-action-form .form-actions .form-submit {
+    margin: 0 0.5rem 0 0; /* LTR */
+}
+
+[dir="rtl"] .wmentity-overview-bulk-action-form .form-actions .form-submit {
+    margin-right: 0;
+    margin-left: 0.5rem;
+}
+
+.wmentity-overview-bulk-action-form .form-actions {
+    margin: 0 0 0 0.5rem; /* LTR */
+}
+
+[dir="rtl"] .wmentity-overview-bulk-action-form .form-actions {
+    margin-right: 0.5rem;
+    margin-left: 0;
+}

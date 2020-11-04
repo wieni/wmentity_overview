@@ -34,7 +34,7 @@ class EntityOverviewController implements ContainerInjectionInterface
 
         $overview = $builder->render();
 
-        $this->moduleHandler->alter('entity_overview', $overview, $definition);
+        $this->moduleHandler->alter('entity_overview', $overview, $builder);
 
         return $overview;
     }
