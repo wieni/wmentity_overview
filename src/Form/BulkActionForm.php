@@ -131,23 +131,23 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
             $pluginId = $formState->getValue('bulk_action');
             $action = $this->getAction($pluginId);
             $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
+            $entities = $this->getEntities($formState);
 
-            if ($action instanceof PluginFormInterface || $action instanceof ActionPluginFormInterface) {
+            if ($action instanceof PluginFormInterface) {
                 $action->validateConfigurationForm($form, $subFormState);
+            }
+
+            if ($action instanceof ActionPluginFormInterface) {
+                $action->validateConfigurationForm($form, $subFormState, $entities);
             }
         }
     }
 
     public function submitForm(array &$form, FormStateInterface $formState): void
     {
-        if (!$rows = array_filter($formState->getValue('table', []))) {
-            return;
-        }
-
         $pluginId = $formState->getValue('bulk_action');
         $action = $this->getAction($pluginId);
-        $overviewBuilder = $this->getOverviewBuilder($formState);
-        $entities = $this->getEntitiesFromRowKeys($overviewBuilder, array_keys($rows));
+        $entities = $this->getEntities($formState);
 
         if (!empty($form['configuration']['form'])) {
             $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
@@ -214,8 +214,15 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         return $form['configuration'];
     }
 
-    protected function getEntitiesFromRowKeys(OverviewBuilderInterface $overviewBuilder, array $keys): array
+    protected function getEntities(FormStateInterface $formState): array
     {
+        if (!$rows = array_filter($formState->getValue('table', []))) {
+            return [];
+        }
+
+        $keys = array_keys($rows);
+        $overviewBuilder = $this->getOverviewBuilder($formState);
+
         return array_reduce($keys, static function (array $entities, $key) use ($overviewBuilder) {
             if (empty($key) || !is_string($key)) {
                 return $entities;
