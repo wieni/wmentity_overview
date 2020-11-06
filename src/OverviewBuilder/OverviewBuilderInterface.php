@@ -3,6 +3,7 @@
 namespace Drupal\wmentity_overview\OverviewBuilder;
 
 use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilderInterface;
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
 use Drupal\wmentity_overview\Common\ColumnInterface;
@@ -22,6 +23,10 @@ interface OverviewBuilderInterface extends EntityListBuilderInterface
 
     /** Information about the overview builder. */
     public function getDefinition(): OverviewBuilder;
+
+    public function getRowKeyByEntity(EntityInterface $entity): string;
+
+    public function getEntityByRowKey(string $rowKey): ?EntityInterface;
 
     /**
      * Instantiates a new instance of this overview builder.

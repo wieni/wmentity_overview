@@ -36,6 +36,6 @@ class BulkActionOverviewSubscriber implements EventSubscriberInterface
         }
 
         $overview = &$event->getOverview();
-        $overview['table'] = $this->formBuilder->getForm(BulkActionForm::class, $overview['table'], $builder);
+        $overview['table'] = $this->formBuilder->getForm(BulkActionForm::class, $overview['table'], $builder->getDefinition()->getId());
     }
 }

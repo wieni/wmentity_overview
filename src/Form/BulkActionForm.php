@@ -15,8 +15,10 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\wmentity_overview\Action\SubmitFormActionInterface;
 use Drupal\wmentity_overview\OverviewBuilder\BulkActionOverviewBuilderInterface;
+use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderInterface;
+use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderManager;
+use Drupal\wmentity_overview\Plugin\Action\ActionPluginFormInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BulkActionForm implements FormInterface, ContainerInjectionInterface
@@ -24,14 +26,16 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
     use DependencySerializationTrait;
     use StringTranslationTrait;
 
-    /** @var BulkActionOverviewBuilderInterface */
-    protected $overviewBuilder;
+    /** @var string */
+    protected $overviewBuilderId;
     /** @var EntityTypeManagerInterface */
     protected $entityTypeManager;
     /** @var EntityRepositoryInterface */
     protected $entityRepository;
     /** @var ActionManager */
     protected $actionManager;
+    /** @var OverviewBuilderManager */
+    protected $overviewBuilderManager;
 
     public static function create(ContainerInterface $container)
     {
@@ -39,6 +43,7 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         $instance->entityTypeManager = $container->get('entity_type.manager');
         $instance->entityRepository = $container->get('entity.repository');
         $instance->actionManager = $container->get('plugin.manager.action');
+        $instance->overviewBuilderManager = $container->get('plugin.manager.wmentity_overview_builder');
 
         return $instance;
     }
@@ -48,17 +53,15 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         return 'wmentity_overview_bulk_action_form';
     }
 
-    public function buildForm(array $form, FormStateInterface $formState, ?array $table = null, ?BulkActionOverviewBuilderInterface $overviewBuilder = null): array
+    public function buildForm(array $form, FormStateInterface $formState, ?array $table = null, ?string $overviewBuilderId = null): array
     {
         if (!is_array($table)) {
             throw new \RuntimeException('BulkActionForm needs a table render array to wrap');
         }
 
-        if ($overviewBuilder === null) {
+        if (!$overviewBuilder = $this->getOverviewBuilder($formState)) {
             throw new \RuntimeException('BulkActionForm needs an OverviewBuilder');
         }
-
-        $this->overviewBuilder = $overviewBuilder;
 
         $form['#attached']['library'][] = 'wmentity_overview/bulk-action-form';
 
@@ -92,7 +95,7 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
             ],
         ];
 
-        if ($action instanceof PluginFormInterface) {
+        if ($action instanceof PluginFormInterface || $action instanceof ActionPluginFormInterface) {
             $form['configuration']['form'] = [];
             $subformState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
 
@@ -127,9 +130,9 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         if (!empty($form['configuration']['form'])) {
             $pluginId = $formState->getValue('bulk_action');
             $action = $this->getAction($pluginId);
+            $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
 
-            if ($action instanceof PluginFormInterface) {
-                $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
+            if ($action instanceof PluginFormInterface || $action instanceof ActionPluginFormInterface) {
                 $action->validateConfigurationForm($form, $subFormState);
             }
         }
@@ -143,23 +146,22 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
 
         $pluginId = $formState->getValue('bulk_action');
         $action = $this->getAction($pluginId);
-
-        if ($action instanceof PluginFormInterface && !empty($form['configuration']['form'])) {
-            $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
-            $action->submitConfigurationForm($form, $subFormState);
-        }
-
         $overviewBuilder = $this->getOverviewBuilder($formState);
-        $entities = $this->getEntitiesFromRowKeys(
-            $overviewBuilder->getDefinition()->getEntityTypeId(),
-            array_keys($rows)
-        );
+        $entities = $this->getEntitiesFromRowKeys($overviewBuilder, array_keys($rows));
 
-        if ($action instanceof SubmitFormActionInterface) {
-            $action->submitForm($form, $formState, $entities);
-        } else {
-            $action->executeMultiple($entities);
+        if (!empty($form['configuration']['form'])) {
+            $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
+
+            if ($action instanceof PluginFormInterface) {
+                $action->submitConfigurationForm($form, $subFormState);
+            }
+
+            if ($action instanceof ActionPluginFormInterface) {
+                $action->submitConfigurationForm($form, $subFormState, $entities);
+            }
         }
+
+        $action->executeMultiple($entities);
     }
 
     protected function getActionOptions(BulkActionOverviewBuilderInterface $overviewBuilder): array
@@ -193,12 +195,13 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
 
     protected function getOverviewBuilder(?FormStateInterface $formState = null): BulkActionOverviewBuilderInterface
     {
-        if (isset($this->overviewBuilder)) {
-            return $this->overviewBuilder;
+        if ($formState && !empty($formState->getBuildInfo()['args'])) {
+            $this->overviewBuilderId = $formState->getBuildInfo()['args'][1];
         }
 
-        if ($formState && !empty($formState->getBuildInfo()['args'])) {
-            return $this->overviewBuilder = $formState->getBuildInfo()['args'][1];
+        if (isset($this->overviewBuilderId)) {
+            return $this->overviewBuilderManager
+                ->createInstance($this->overviewBuilderId);;
         }
 
         throw new \RuntimeException('BulkActionForm needs an OverviewBuilder');
@@ -211,29 +214,18 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         return $form['configuration'];
     }
 
-    protected function getEntitiesFromRowKeys(string $entityTypeId, array $keys): array
+    protected function getEntitiesFromRowKeys(OverviewBuilderInterface $overviewBuilder, array $keys): array
     {
-        $storage = $this->entityTypeManager->getStorage($entityTypeId);
-
-        return array_reduce($keys, function (array $entities, $key) use ($storage) {
+        return array_reduce($keys, static function (array $entities, $key) use ($overviewBuilder) {
             if (empty($key) || !is_string($key)) {
                 return $entities;
             }
 
-            $parts = explode('.', $key);
-
-            if (count($parts) !== 2) {
+            if (!$entity = $overviewBuilder->getEntityByRowKey($key)) {
                 return $entities;
             }
 
-            [$id, $langcode] = $parts;
-
-            if (!$entity = $storage->load($id)) {
-                return $entities;
-            }
-
-            $entities[] = $this->entityRepository->getTranslationFromContext($entity, $langcode);
-
+            $entities[] = $entity;
             return $entities;
         }, []);
     }
