@@ -65,7 +65,6 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
 
         $form['#attached']['library'][] = 'wmentity_overview/bulk-action-form';
 
-        $formWrapperId = Html::getUniqueId('wmentity-overview-bulk-action-form');
         $form['form'] = [
             '#type' => 'container',
             '#attributes' => [
@@ -80,7 +79,7 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
             '#required' => true,
             '#ajax' => [
                 'callback' => [static::class, 'onBulkActionsAjax'],
-                'wrapper' => $formWrapperId,
+                'wrapper' => 'wmentity-overview-bulk-action-form__configuration',
             ],
         ];
 
@@ -91,7 +90,7 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
             '#type' => 'container',
             '#attributes' => [
                 'class' => ['wmentity-overview-bulk-action-form__form'],
-                'id' => $formWrapperId,
+                'id' => 'wmentity-overview-bulk-action-form__configuration',
             ],
         ];
 
