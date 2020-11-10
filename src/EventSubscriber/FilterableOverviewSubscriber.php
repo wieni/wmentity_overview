@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\wmentity_overview\Event\EntityOverviewAlterEvent;
 use Drupal\wmentity_overview\Form\BulkActionForm;
 use Drupal\wmentity_overview\Form\FilterForm;
-use Drupal\wmentity_overview\OverviewBuilder\BulkActionOverviewBuilderInterface;
+use Drupal\wmentity_overview\OverviewBuilder\FilterableOverviewBuilderInterface;
 use Drupal\wmentity_overview\WmEntityOverviewEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -28,11 +28,11 @@ class FilterableOverviewSubscriber implements EventSubscriberInterface
         return $events;
     }
 
-    protected function onOverviewAlter(EntityOverviewAlterEvent $event): void
+    public function onOverviewAlter(EntityOverviewAlterEvent $event): void
     {
         $builder = $event->getBuilder();
 
-        if (!$builder instanceof BulkActionOverviewBuilderInterface) {
+        if (!$builder instanceof FilterableOverviewBuilderInterface) {
             return;
         }
 
