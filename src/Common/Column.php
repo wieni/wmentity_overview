@@ -16,19 +16,23 @@ class Column implements ColumnInterface
     protected $defaultSortDirection;
     /** @var string|null */
     protected $sortField;
+    /** @var string[] */
+    protected $classes;
 
     public function __construct(
         string $name,
         $label = null,
         bool $sortable = true,
         ?string $defaultSortDirection = null,
-        ?string $sortField = null
+        ?string $sortField = null,
+        array $classes = []
     ) {
         $this->name = $name;
         $this->label = $label;
         $this->sortable = $sortable;
         $this->defaultSortDirection = $defaultSortDirection;
         $this->sortField = $sortField;
+        $this->classes = $classes;
     }
 
     public static function create(string $name): ColumnInterface
@@ -88,6 +92,25 @@ class Column implements ColumnInterface
     public function setSortField(?string $value): ColumnInterface
     {
         $this->sortField = $value;
+        return $this;
+    }
+
+    public function getClasses(): array
+    {
+        return $this->classes;
+    }
+
+    public function setClasses(array $classes): Column
+    {
+        $this->classes = $classes;
+        return $this;
+    }
+
+    public function addClass(string $class): Column
+    {
+        $this->classes[] = $class;
+        $this->classes = array_unique($this->classes);
+
         return $this;
     }
 }

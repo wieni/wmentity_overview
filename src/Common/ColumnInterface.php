@@ -18,4 +18,7 @@ interface ColumnInterface
 
     /** The field that should be used for sorting. */
     public function getSortField(): ?string;
+
+    /** Classes to apply to the table column */
+    public function getClasses(): array;
 }

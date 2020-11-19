@@ -65,6 +65,10 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
                     $data['sort'] = $defaultSort;
                 }
 
+                if ($classes = $column->getClasses()) {
+                    $data['class'] = $classes;
+                }
+
                 return $data;
             },
             $this->getColumns()
