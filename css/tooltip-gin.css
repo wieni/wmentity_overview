@@ -1,0 +1,28 @@
+/* Base styles for the tooltip's content area */
+.tooltip:after,
+[data-tooltip]:after {
+    color: var(--colorGinContextualText);
+    background: var(--colorGinContextual);
+    border-radius: 4px; /* $borderSmall */
+}
+
+[data-tooltip]:before,
+.tooltip:before,
+.tooltip-top:before {
+    border-top-color: var(--colorGinContextual);
+}
+
+.tooltip-left:before {
+    border-top-color: transparent;
+    border-left-color: var(--colorGinContextual);
+}
+
+.tooltip-bottom:before {
+    border-top-color: transparent;
+    border-bottom-color: var(--colorGinContextual);
+}
+
+.tooltip-right:before {
+    border-top-color: transparent;
+    border-right-color: var(--colorGinContextual);
+}

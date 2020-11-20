@@ -3,3 +3,9 @@ filter-form:
     css:
         base:
             css/filter-form.css: {}
+
+tooltip:
+    version: VERSION
+    css:
+        component:
+            css/tooltip.css: {}

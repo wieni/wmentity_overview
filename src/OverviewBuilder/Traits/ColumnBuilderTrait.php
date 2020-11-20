@@ -2,6 +2,7 @@
 
 namespace Drupal\wmentity_overview\OverviewBuilder\Traits;
 
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Entity\EntityChangedInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -72,6 +73,26 @@ trait ColumnBuilderTrait
         return [
             'data' => [
                 '#plain_text' => $text,
+            ],
+        ];
+    }
+
+    protected function buildTruncatedTextColumn($text, int $maxLength = 50, bool $wordSafe = false, bool $addEllipsis = false, int $minWordsafeLength = 1): array
+    {
+        $truncatedText = Unicode::truncate($text, $maxLength, $wordSafe, $addEllipsis, $minWordsafeLength);
+
+        return [
+            'data' => [
+                '#type' => 'html_tag',
+                '#tag' => 'span',
+                '#value' => $truncatedText,
+                '#attributes' => [
+                    'class' => ['tooltip', 'tooltip-bottom'],
+                    'data-tooltip' => $text,
+                ],
+                '#attached' => [
+                    'library' => ['wmentity_overview/tooltip']
+                ]
             ],
         ];
     }
