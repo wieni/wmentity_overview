@@ -68,6 +68,17 @@ trait ColumnBuilderTrait
         ];
     }
 
+    protected function buildTagColumn(string $tag, $value = null): array
+    {
+        return [
+            'data' => [
+                '#type' => 'html_tag',
+                '#tag' => $tag,
+                '#value' => $value,
+            ],
+        ];
+    }
+
     protected function buildTextColumn($text): array
     {
         return [
@@ -77,23 +88,47 @@ trait ColumnBuilderTrait
         ];
     }
 
+    protected function buildTextWithTooltipColumn($text, $tooltip): array
+    {
+        $column = [
+            'data' => [
+                '#attached' => [
+                    'library' => ['wmentity_overview/tooltip']
+                ],
+                'tooltip' => [
+                    '#type' => 'html_tag',
+                    '#tag' => 'div',
+                    '#value' => $tooltip,
+                    '#attributes' => [
+                        'data-tooltip' => 'nothing',
+                    ],
+                    'arrow' => [
+                        '#markup' => '<div data-popper-arrow></div>'
+                    ],
+                ],
+            ],
+        ];
+
+        if (is_array($text)) {
+            $column['data']['target']['content'] = $text;
+        } else {
+            $column['data']['target'] = [
+                '#type' => 'html_tag',
+                '#tag' => 'div',
+                '#value' => $text,
+                '#attributes' => [
+                    'data-tooltip-target' => 'nothing',
+                ],
+            ];
+        }
+
+        return $column;
+    }
+
     protected function buildTruncatedTextColumn($text, int $maxLength = 50, bool $wordSafe = false, bool $addEllipsis = false, int $minWordsafeLength = 1): array
     {
         $truncatedText = Unicode::truncate($text, $maxLength, $wordSafe, $addEllipsis, $minWordsafeLength);
 
-        return [
-            'data' => [
-                '#type' => 'html_tag',
-                '#tag' => 'span',
-                '#value' => $truncatedText,
-                '#attributes' => [
-                    'class' => ['tooltip', 'tooltip-bottom'],
-                    'data-tooltip' => $text,
-                ],
-                '#attached' => [
-                    'library' => ['wmentity_overview/tooltip']
-                ]
-            ],
-        ];
+        return $this->buildTextWithTooltipColumn($truncatedText, $text);
     }
 }

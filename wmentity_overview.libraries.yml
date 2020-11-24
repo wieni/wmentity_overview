@@ -9,3 +9,7 @@ tooltip:
     css:
         component:
             css/tooltip.css: {}
+    js:
+        js/tooltip.js: {}
+    dependencies:
+        - core/popperjs
