@@ -33,7 +33,7 @@ function wmentity_overview_library_info_alter(array &$libraries, string $extensi
     }
 
     if (_wmentity_overview_theme_is_active('gin')) {
-        $libraries['tooltip']['css']['theme'][]['css/tooltip-gin.css'] = [];
+        $libraries['tooltip']['css']['theme']['css/tooltip-gin.css'] = [];
     }
 }
 
