@@ -125,9 +125,13 @@ trait ColumnBuilderTrait
         return $column;
     }
 
-    protected function buildTruncatedTextColumn($text, int $maxLength = 50, bool $wordSafe = false, bool $addEllipsis = false, int $minWordsafeLength = 1): array
+    protected function buildTruncatedTextColumn($text, int $maxLength = 20, bool $wordSafe = true, bool $addEllipsis = true, int $minWordsafeLength = 1): array
     {
         $truncatedText = Unicode::truncate($text, $maxLength, $wordSafe, $addEllipsis, $minWordsafeLength);
+
+        if ($truncatedText === $text) {
+            return $this->buildTextColumn($text);
+        }
 
         return $this->buildTextWithTooltipColumn($truncatedText, $text);
     }
