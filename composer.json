@@ -1,7 +1,7 @@
 {
     "name": "wieni/wmentity_overview",
     "type": "drupal-module",
-    "description": "Improved EntityListBuilders with support for paging, table sorting, table dragging, filtering, database queries and more.",
+    "description": "Improved EntityListBuilders with support for paging, table sorting, table dragging, filtering, bulk actions, database queries and more.",
     "license": "MIT",
     "authors": [
         {

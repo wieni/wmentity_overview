@@ -1,4 +1,4 @@
-wmentity_overview
+Entity Overview
 ======================
 
 [![Latest Stable Version](https://poser.pugx.org/wieni/wmentity_overview/v/stable)](https://packagist.org/packages/wieni/wmentity_overview)
@@ -6,7 +6,7 @@ wmentity_overview
 [![License](https://poser.pugx.org/wieni/wmentity_overview/license)](https://packagist.org/packages/wieni/wmentity_overview)
 
 > Improved EntityListBuilders with support for paging, table sorting,
-> table dragging, filtering, database queries and more.
+> table dragging, filtering, bulk actions, database queries and more.
 
 ## Why?
 At Wieni, we're not a big fan of the

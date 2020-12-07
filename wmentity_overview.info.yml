@@ -1,6 +1,6 @@
-name: wmentity_overview
+name: Entity Overview
 type: module
-description: Improved EntityListBuilders with support for paging, table sorting, table dragging, filtering, database queries and more.
+description: Improved EntityListBuilders with support for paging, table sorting, table dragging, filtering, bulk actions, database queries and more.
 core: 8.x
 core_version_requirement: ^8 || ^9
 package: Wieni
