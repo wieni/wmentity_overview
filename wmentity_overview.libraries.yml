@@ -4,6 +4,12 @@ filter-form:
         base:
             css/filter-form.css: {}
 
+bulk-action-form:
+    version: VERSION
+    css:
+        base:
+            css/bulk-action-form.css: {}
+
 tooltip:
     version: VERSION
     css:

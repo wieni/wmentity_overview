@@ -3,12 +3,13 @@
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
 use Drupal\wmentity_overview\Event\EntityOverviewAlterEvent;
 use Drupal\wmentity_overview\Event\EntityOverviewAlternativesAlterEvent;
+use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderInterface;
 use Drupal\wmentity_overview\WmEntityOverviewEvents;
 
-function wmentity_overview_entity_overview_alter(array &$overview, OverviewBuilder $definition)
+function wmentity_overview_entity_overview_alter(array &$overview, OverviewBuilderInterface $builder)
 {
     $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
-    $event = new EntityOverviewAlterEvent($definition, $overview);
+    $event = new EntityOverviewAlterEvent($builder, $overview);
 
     $dispatcher->dispatch(WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER, $event);
 }

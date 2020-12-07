@@ -17,6 +17,18 @@ services:
             - '@plugin.manager.wmentity_overview_builder'
         tags: [{ name: event_subscriber }]
 
+    wmentity_overview.filterable_overview.subscriber:
+        class: Drupal\wmentity_overview\EventSubscriber\FilterableOverviewSubscriber
+        arguments:
+            - '@form_builder'
+        tags: [{ name: event_subscriber }]
+
+    wmentity_overview.bulk_action_overview.subscriber:
+        class: Drupal\wmentity_overview\EventSubscriber\BulkActionOverviewSubscriber
+        arguments:
+            - '@form_builder'
+        tags: [{ name: event_subscriber }]
+
     paramconverter.wmentity_overview.overview_builder:
         class: Drupal\wmentity_overview\ParamConverter\OverviewBuilderConverter
         arguments:

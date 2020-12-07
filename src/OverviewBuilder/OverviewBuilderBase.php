@@ -95,8 +95,8 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
         return array_reduce(
             $rows,
             function (array $entities, array $row) {
-                if ($entity = $this->getEntityFromRow($row)) {
-                    $key = implode('.', [$entity->id(), $entity->language()->getId()]);
+                if ($entity = $this->getEntityByRow($row)) {
+                    $key = $this->getRowKeyByEntity($entity);
                     $entities[$key] = $entity;
                 }
 
@@ -123,7 +123,33 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
             ->fields($alias, $fields);
     }
 
-    protected function getEntityFromRow(array $row): ?EntityInterface
+    public function getRowKeyByEntity(EntityInterface $entity): string
+    {
+        return implode('.', [$entity->id(), $entity->language()->getId()]);
+    }
+
+    public function getEntityByRowKey(string $rowKey): ?EntityInterface
+    {
+        $parts = explode('.', $rowKey);
+
+        if (count($parts) !== 2) {
+            return null;
+        }
+
+        [$id, $langcode] = $parts;
+
+        if (!$entity = $this->storage->load($id)) {
+            return null;
+        }
+
+        if ($entity->hasTranslation($langcode)) {
+            return $entity->getTranslation($langcode);
+        }
+
+        return $entity;
+    }
+
+    protected function getEntityByRow(array $row): ?EntityInterface
     {
         $idKey = $this->entityType->getKey('id');
 
