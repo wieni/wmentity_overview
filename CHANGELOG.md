@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2020-12-07
+### Added
+- Add bulk actions
+- Add helper traits for easier column building
+- Add a way to show a tooltip while hovering over a column
+- Add support for adding classes to header columns, eg. [responsive table classes](https://www.drupal.org/node/1796238).
+- Add PHPStan
+
+### Changed
+- Added two new public methods to `OverviewBuilderInterface` and `OverviewBuilderBase`: `getRowKeyByEntity` and 
+  `getEntityByRowKey`.
+
 ## [1.6.0] - 2020-09-01
 ### Added
 - Add default, theme-agnostic styling for filter form

@@ -21,7 +21,7 @@ a couple of reasons:
 
 That's why a couple of years ago we decided to disable the module
 altogether and we ended up with the
-[EntityListBuilder](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Entity%21EntityListBuilder.php/class/EntityListBuilder/8.2.x)-based
+[EntityListBuilder](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Entity%21EntityListBuilder.php/class/EntityListBuilder/8.2.x) based
 listings.
 
 Those proved to be lacking in functionality and user friendliness soon
@@ -32,6 +32,7 @@ features of the latter, plus the following:
 - **Exposed filtering** with a custom form
 - **Behind-the-scenes filtering** using custom database queries
 - **Table sorting**, configurable on a per-column basis
+- **Bulk actions** using core [Action plugins](https://www.drupal.org/node/2020549)
 - **Override built-in entity listings** with a custom one, on an entity
   type or bundle level
 - **Override any route** with a custom entity listing
@@ -180,12 +181,28 @@ in the session storage.
 Custom storage methods can be added by creating a Drupal plugin with the
 [`@FilterStorage`](src/Annotation/FilterStorage.php) annotation and an
 `id` parameter, implementing
-[FilterStorageInterface](src/FilterStorage/FilterStorageInterface.php)
+[`FilterStorageInterface`](src/FilterStorage/FilterStorageInterface.php)
 and optionally extending
 [`FilterStorageBase`](src/FilterStorage/FilterStorageBase.php).
 
 The default storage method is `query`, but this can be changed by adding
 a `filter_storage` parameter to `@OverviewBuilder` annotations.
+
+### Add bulk actions
+Bulk actions can be added to your overview by implementing 
+[`BulkActionOverviewBuilderInterface`](src/OverviewBuilder/BulkActionOverviewBuilderInterface.php)
+and the `getBulkActionPlugins` method. This method can return two kinds of arrays:
+
+- an associative array with the plugin IDs as keys and the labels as values
+- a flat array with plugin ID's
+
+In the last case the default plugin labels will be used. 
+
+It is possible to attach a configuration form to your action plugin by implementing 
+[`PluginFormInterface`](https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Plugin%21PluginFormInterface.php/interface/PluginFormInterface).
+In case you need access to the entities in your form validate and/or submit handlers, you can implement 
+[`ActionPluginFormInterface`](src/Plugin/Action/ActionPluginFormInterface.php) instead. Note that in contrary to 
+`PluginFormInterface` this is a custom interface, only supported by this module.
 
 ### Hooks and events
 #### `hook_entity_overview_alter`
