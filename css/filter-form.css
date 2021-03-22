@@ -12,7 +12,10 @@
 }
 
 .wmentity-overview-filter-form .form-item {
-    margin: 0.75rem 0.5rem 0 0; /* LTR */
+    /* LTR */
+    margin-top: 0.75rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0;
 }
 
 [dir="rtl"] .wmentity-overview-filter-form .form-item {
@@ -39,4 +42,9 @@
 
 [dir="rtl"] .wmentity-overview-filter-form__actions:last-child {
     margin-left: 0;
+}
+
+/** Give checkboxes the same padding as other form elements in Claro / Gin */
+.wmentity-overview-filter-form .form-type--checkbox {
+    padding: calc(0.75rem - 1px) calc(1rem - 1px);
 }
