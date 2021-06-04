@@ -217,7 +217,7 @@ also provided:
 
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
 
-function yourmodule_entity_overview_alter(OverviewBuilder $definition, array $overview)
+function yourmodule_entity_overview_alter(OverviewBuilder $definition, array &$overview)
 {
     if (!empty($overview['form'])) {
         $overview['form']['#attributes']['class'][] = 'custom-entity-overview__form';

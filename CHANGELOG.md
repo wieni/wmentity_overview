@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2021-06-04
 ### Added
 - Add `buildDateTimeColumn` helper
 - Add entity access check to query
 - Add abstract base class for actions with batch processing
+- Add documentation for hooks in wmentity_overview.api.php
 
 ## [1.7.1] - 2021-03-22
 ### Changed

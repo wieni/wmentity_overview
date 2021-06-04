@@ -1,0 +1,38 @@
+<?php
+
+use Drupal\wmentity_overview\Annotation\OverviewBuilder;
+use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderInterface;
+
+function hook_entity_overview_alter(OverviewBuilder $definition, array &$overview)
+{
+    if (!empty($overview['form'])) {
+        $overview['form']['#attributes']['class'][] = 'custom-entity-overview__form';
+    }
+
+    $overview['table']['#attributes']['class'][] = 'custom-entity-overview__table';
+}
+
+function hook_entity_overview_alternatives_alter(array &$alternatives, OverviewBuilderInterface $builder)
+{
+    $routeMatch = \Drupal::routeMatch();
+    $overviewBuilders = \Drupal::getContainer()->get('plugin.manager.wmentity_overview_builder');
+
+    if (!$vocabulary = $routeMatch->getParameter('taxonomy_vocabulary')) {
+        return;
+    }
+
+    if ($builder->getDefinition()->getEntityTypeId() !== 'taxonomy_term') {
+        return;
+    }
+
+    $filters = ['vid' => $vocabulary->id()];
+    $alternatives = array_merge(
+        $alternatives,
+        $overviewBuilders->getAlternativesByFilters($builder->getDefinition(), $filters)
+    );
+}
+
+function hook_wmentity_overview_builder_info_alter(array &$definitions)
+{
+    $definitions['node.page']['class'] = \Drupal\my_module\Entity\Overview\Node\PageOverview::class;
+}
