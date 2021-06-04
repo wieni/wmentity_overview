@@ -78,6 +78,7 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
     public function load()
     {
         $q = $this->getQuery();
+        $q->addTag($this->entityTypeId . '_access');
 
         if ($this->limit) {
             $q = $q->extend(PagerSelectExtender::class);
