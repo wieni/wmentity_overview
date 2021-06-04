@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
-use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderInterface;
 
 function hook_entity_overview_alter(OverviewBuilder $definition, array &$overview)
 {
@@ -12,7 +11,7 @@ function hook_entity_overview_alter(OverviewBuilder $definition, array &$overvie
     $overview['table']['#attributes']['class'][] = 'custom-entity-overview__table';
 }
 
-function hook_entity_overview_alternatives_alter(array &$alternatives, OverviewBuilderInterface $builder)
+function hook_entity_overview_alternatives_alter(array &$alternatives, OverviewBuilder $definition)
 {
     $routeMatch = \Drupal::routeMatch();
     $overviewBuilders = \Drupal::getContainer()->get('plugin.manager.wmentity_overview_builder');
@@ -21,14 +20,14 @@ function hook_entity_overview_alternatives_alter(array &$alternatives, OverviewB
         return;
     }
 
-    if ($builder->getDefinition()->getEntityTypeId() !== 'taxonomy_term') {
+    if ($definition->getEntityTypeId() !== 'taxonomy_term') {
         return;
     }
 
     $filters = ['vid' => $vocabulary->id()];
     $alternatives = array_merge(
         $alternatives,
-        $overviewBuilders->getAlternativesByFilters($builder->getDefinition(), $filters)
+        $overviewBuilders->getAlternativesByFilters($definition, $filters)
     );
 }
 
