@@ -52,6 +52,15 @@ trait ColumnBuilderTrait
         ];
     }
 
+    protected function buildDateTimeColumn(?\DateTimeInterface $dateTime, $emptyValue = '/'): array
+    {
+        return [
+            'data' => [
+                '#plain_text' => $dateTime ? $dateTime->format('d/m/Y H:i') : $emptyValue,
+            ],
+        ];
+    }
+
     protected function buildOperationsColumn(EntityInterface $entity): array
     {
         return [
