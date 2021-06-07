@@ -3,8 +3,8 @@
 namespace Drupal\wmentity_overview\EventSubscriber;
 
 use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Render\Element;
 use Drupal\wmentity_overview\Event\EntityOverviewAlterEvent;
-use Drupal\wmentity_overview\Form\BulkActionForm;
 use Drupal\wmentity_overview\Form\FilterForm;
 use Drupal\wmentity_overview\OverviewBuilder\FilterableOverviewBuilderInterface;
 use Drupal\wmentity_overview\WmEntityOverviewEvents;
@@ -36,8 +36,18 @@ class FilterableOverviewSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $form = $this->formBuilder->getForm(FilterForm::class, $builder);
+        $children = array_diff(
+            Element::children($form),
+            ['form_id', 'form_token', 'form_build_id', 'op']
+        );
+
+        if (empty($children)) {
+            return;
+        }
+
         $overview = &$event->getOverview();
-        $overview['form'] = $this->formBuilder->getForm(FilterForm::class, $builder);
+        $overview['form'] = $form;
         $overview['form']['#weight'] = -1;
     }
 }

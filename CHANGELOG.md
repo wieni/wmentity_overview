@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.1] - 2021-06-07
+### Changed
+- Allow disabling the filter form by returning an empty array in `buildFilterForm` 
+
+### Fixed
+- Fix argument in hook docs
+
 ## [1.8.0] - 2021-06-04
 ### Added
 - Add `buildDateTimeColumn` helper
