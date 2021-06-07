@@ -181,10 +181,11 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
 
     public function render()
     {
+        $build['#title'] = $this->getTitle();
+
         $build['table'] = [
             '#type' => 'table',
             '#header' => $this->buildHeader(),
-            '#title' => $this->getTitle(),
             '#rows' => [],
             '#empty' => $this->t('There are no @label yet.', ['@label' => $this->entityType->getPluralLabel()]),
             '#cache' => [

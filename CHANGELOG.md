@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.2] - 2021-06-07
+### Fixed
+- Fix overview title not showing
+
 ## [1.8.1] - 2021-06-07
 ### Changed
 - Allow disabling the filter form by returning an empty array in `buildFilterForm` 
