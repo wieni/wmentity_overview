@@ -118,6 +118,12 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         unset($table['#rows']);
         $table += $rows;
 
+        // Move #weight if it was previously set
+        if (isset($table['#weight'])) {
+            $form['#weight'] = $table['#weight'];
+            unset($table['#weight']);
+        }
+
         $table['#tableselect'] = true;
         $form['table'] = $table;
 
