@@ -34,3 +34,9 @@ services:
         arguments:
             - '@plugin.manager.wmentity_overview_builder'
         tags: [{ name: paramconverter, priority: 20  }]
+
+    wmentity_overview.controller.entity_overview:
+        class: Drupal\wmentity_overview\Controller\EntityOverviewController
+        arguments:
+            - '@module_handler'
+            - '@plugin.manager.wmentity_overview_builder'

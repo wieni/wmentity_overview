@@ -15,13 +15,20 @@ class EntityOverviewController implements ContainerInjectionInterface
     /** @var OverviewBuilderManager */
     protected $overviewBuilders;
 
+    public function __construct(
+        ModuleHandlerInterface $moduleHandler,
+        OverviewBuilderManager $overviewBuilders
+    ) {
+        $this->moduleHandler = $moduleHandler;
+        $this->overviewBuilders = $overviewBuilders;
+    }
+
     public static function create(ContainerInterface $container)
     {
-        $instance = new static;
-        $instance->moduleHandler = $container->get('module_handler');
-        $instance->overviewBuilders = $container->get('plugin.manager.wmentity_overview_builder');
-
-        return $instance;
+        return new static(
+            $container->get('module_handler'),
+            $container->get('plugin.manager.wmentity_overview_builder')
+        );
     }
 
     public function show(OverviewBuilderInterface $builder)
