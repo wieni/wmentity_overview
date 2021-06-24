@@ -54,6 +54,11 @@ trait ColumnBuilderTrait
 
     protected function buildDateTimeColumn(?\DateTimeInterface $dateTime, $emptyValue = '/'): array
     {
+        if ($dateTime) {
+            $dateTime = \DateTime::createFromFormat('U', $dateTime->format('U'))
+                ->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+        }
+
         return [
             'data' => [
                 '#plain_text' => $dateTime ? $dateTime->format('d/m/Y H:i') : $emptyValue,
