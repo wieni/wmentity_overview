@@ -3,7 +3,6 @@
 namespace Drupal\wmentity_overview\Form;
 
 use Drupal\Component\Plugin\Exception\PluginException;
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Action\ActionInterface;
 use Drupal\Core\Action\ActionManager;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -16,10 +15,10 @@ use Drupal\Core\Form\SubformState;
 use Drupal\Core\Plugin\PluginFormInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\wmentity_overview\OverviewBuilder\BulkActionOverviewBuilderInterface;
-use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderInterface;
 use Drupal\wmentity_overview\OverviewBuilder\OverviewBuilderManager;
 use Drupal\wmentity_overview\Plugin\Action\ActionPluginFormInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class BulkActionForm implements FormInterface, ContainerInjectionInterface
 {
@@ -36,6 +35,8 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
     protected $actionManager;
     /** @var OverviewBuilderManager */
     protected $overviewBuilderManager;
+    /** @var RequestStack */
+    protected $requestStack;
 
     public static function create(ContainerInterface $container)
     {
@@ -44,6 +45,7 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
         $instance->entityRepository = $container->get('entity.repository');
         $instance->actionManager = $container->get('plugin.manager.action');
         $instance->overviewBuilderManager = $container->get('plugin.manager.wmentity_overview_builder');
+        $instance->requestStack = $container->get('request_stack');
 
         return $instance;
     }
@@ -164,6 +166,12 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
             if ($action instanceof ActionPluginFormInterface) {
                 $action->submitConfigurationForm($form, $subFormState, $entities);
             }
+        }
+
+        // Workaround for https://www.drupal.org/project/drupal/issues/2950883
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request && $request->query->has('destination')) {
+            $request->query->remove('destination');
         }
 
         $action->executeMultiple($entities);
