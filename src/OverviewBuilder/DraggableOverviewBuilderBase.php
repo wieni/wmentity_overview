@@ -152,7 +152,7 @@ abstract class DraggableOverviewBuilderBase extends OverviewBuilderBase implemen
                 $row['weight']['#delta'] = $delta;
             }
 
-            $form[$this->entitiesKey][$entity->id()] = $row;
+            $form[$this->entitiesKey][$this->getRowKeyByEntity($entity)] = $row;
         }
 
         uasort($form[$this->entitiesKey], [SortArray::class, 'sortByWeightProperty']);
