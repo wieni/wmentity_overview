@@ -21,7 +21,7 @@ class CollectionRouteSubscriber extends RouteSubscriberBase
         $this->overviewBuilders = $overviewBuilders;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         // Run before Drupal\Core\EventSubscriber/ParamConverterSubscriber
         $events[RoutingEvents::ALTER] = ['onAlterRoutes', -180];
