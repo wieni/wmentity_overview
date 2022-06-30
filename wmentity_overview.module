@@ -11,7 +11,7 @@ function wmentity_overview_entity_overview_alter(array &$overview, OverviewBuild
     $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
     $event = new EntityOverviewAlterEvent($builder, $overview);
 
-    $dispatcher->dispatch(WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER, $event);
+    $dispatcher->dispatch($event, WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER);
 }
 
 
@@ -20,7 +20,7 @@ function wmentity_overview_entity_overview_alternatives_alter(array &$alternativ
     $dispatcher = \Drupal::getContainer()->get('event_dispatcher');
     $event = new EntityOverviewAlternativesAlterEvent($definition, $alternatives);
 
-    $dispatcher->dispatch(WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTERNATIVES_ALTER, $event);
+    $dispatcher->dispatch($event, WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTERNATIVES_ALTER);
 }
 
 
