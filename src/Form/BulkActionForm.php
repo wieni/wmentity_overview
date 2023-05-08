@@ -140,6 +140,21 @@ class BulkActionForm implements FormInterface, ContainerInjectionInterface
             $subFormState = SubformState::createForSubform($form['configuration']['form'], $form, $formState);
             $entities = $this->getEntities($formState);
 
+            if ($action instanceof ActionInterface) {
+                foreach ($entities as $entity) {
+                    if (!$action->access($entity)) {
+                        $formState->setErrorByName(
+                            sprintf('%s:%s', $entity->getEntityTypeId(), $entity->bundle()),
+                            sprintf(
+                                '"%s" is not allowed in "%s" Bulk operation',
+                                $entity->label(),
+                                (string) ($action->getPluginDefinition()['label'] ?? $action->getPluginId())
+                            )
+                        );
+                    }
+                }
+            }
+
             if ($action instanceof PluginFormInterface) {
                 $action->validateConfigurationForm($form, $subFormState);
             }

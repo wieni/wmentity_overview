@@ -23,13 +23,18 @@
     margin-left: 0.5rem;
 }
 
-.wmentity-overview-filter-form__actions {
-    margin-left: .5rem; /* LTR */
+.wmentity-overview-filter-form .form-item:last-child {
+    /* LTR */
+    margin-right: 1rem;
 }
 
-[dir="rtl"] .wmentity-overview-filter-form__actions {
-    margin-left: 0;
-    margin-right: .5rem;
+[dir="rtl"] .wmentity-overview-filter-form .form-item:last-child {
+    margin-right: 0;
+    margin-left: 1rem;
+}
+
+.wmentity-overview-filter-form .form-item .claro-autocomplete {
+    width: auto;
 }
 
 .wmentity-overview-filter-form__actions .button {
