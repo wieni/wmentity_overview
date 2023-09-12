@@ -10,6 +10,16 @@ bulk-action-form:
         base:
             css/bulk-action-form.css: {}
 
+popperjs:
+    remote: https://github.com/floating-ui/floating-ui
+    version: '2.11.7'
+    license:
+        name: MIT
+        url: https://github.com/floating-ui/floating-ui/blob/v2.x/LICENSE.md
+        gpl-compatible: true
+    js:
+        https://unpkg.com/@popperjs/core@2.11.7/dist/umd/popper.min.js: { type: external , minified: true }
+
 tooltip:
     version: VERSION
     css:
@@ -18,4 +28,4 @@ tooltip:
     js:
         js/tooltip.js: {}
     dependencies:
-        - core/popperjs
+        - wmentity_overview/popperjs

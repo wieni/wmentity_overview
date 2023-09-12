@@ -20,7 +20,7 @@ class BulkActionOverviewSubscriber implements EventSubscriberInterface
         $this->formBuilder = $formBuilder;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events[WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER] = ['onOverviewAlter'];
 
