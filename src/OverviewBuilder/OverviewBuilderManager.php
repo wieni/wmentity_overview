@@ -6,6 +6,7 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\Core\Utility\Error;
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
 use Drupal\wmentity_overview\FilterStorage\FilterStorageManager;
 use Drupal\wmentity_overview\Plugin\Factory\OverviewBuilderPluginFactory;
@@ -142,7 +143,7 @@ class OverviewBuilderManager extends DefaultPluginManager
                 } catch (\Exception $e) {
                     // Catch the exception to prevent site install from failing
                     // when the entity type in question is not yet installed.
-                    watchdog_exception('wmentity_overview', $e);
+                    Error::logException(\Drupal::logger('wmentity_overview'), $e);
                 }
             }
 
