@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.1] - 2024-03-15
+### Fixed
+- Fix Drupal deprecations
+
+## [1.10.0] - 2023-09-12
+### Added
+- Drupal 10 support
+
 ## [1.9.5] - 2022-1-11
 ### Fixed
 - Validate access on each submitted entity for bulk action
