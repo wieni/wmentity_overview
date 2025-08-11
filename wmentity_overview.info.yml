@@ -1,5 +1,5 @@
 name: Entity Overview
 type: module
 description: Improved EntityListBuilders with support for paging, table sorting, table dragging, filtering, bulk actions, database queries and more.
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^11
 package: Wieni
