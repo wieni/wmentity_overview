@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.11.0] - 2025-06-03
 ### Added
-- Drupal 10 support
+- Drupal 11 support
 
 ## [1.10.1] - 2024-03-15
 ### Fixed
