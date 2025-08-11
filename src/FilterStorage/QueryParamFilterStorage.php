@@ -5,7 +5,7 @@ namespace Drupal\wmentity_overview\FilterStorage;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\wmentity_overview\Annotation\FilterStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -63,15 +63,15 @@ class QueryParamFilterStorage extends FilterStorageBase implements ContainerFact
 
     public function reset(): void
     {
-        $this->getRequest()->query = new ParameterBag;
+        $this->getRequest()->query = new InputBag;
     }
 
-    protected function getParams(): ParameterBag
+    protected function getParams(): InputBag
     {
         $request = $this->getRequest();
 
         if (!$request) {
-            return new ParameterBag;
+            return new InputBag;
         }
 
         return $request->query;
