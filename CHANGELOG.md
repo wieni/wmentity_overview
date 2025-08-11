@@ -3,10 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [1.11.0] - 2024-03-15
+## [1.12.0] - 2025-08-11
 ### Fixed
 - Fix Cannot assign Symfony\Component\HttpFoundation\ParameterBag to property Symfony\Component\HttpFoundation\Request::$query of type Symfony\Component\HttpFoundation\InputBag 
   - Starting with Symfony 7 (Drupal 11), the query propertie has been updated with more specific type-hint. It is now explicitly typed as Symfony\Component\HttpFoundation\InputBag. 
+
+## [1.11.0] - 2025-06-03
+### Added
+- Drupal 10 support
 
 ## [1.10.1] - 2024-03-15
 ### Fixed
