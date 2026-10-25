@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Utility\Error;
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
+use Drupal\wmentity_overview\Attribute\OverviewBuilder as OverviewBuilderAttribute;
 use Drupal\wmentity_overview\FilterStorage\FilterStorageManager;
 use Drupal\wmentity_overview\Plugin\Factory\OverviewBuilderPluginFactory;
 
@@ -33,6 +34,7 @@ class OverviewBuilderManager extends DefaultPluginManager
             $namespaces,
             $moduleHandler,
             OverviewBuilderInterface::class,
+            OverviewBuilderAttribute::class,
             OverviewBuilder::class
         );
         $this->alterInfo('wmentity_overview_builder_info');
