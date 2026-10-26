@@ -3,17 +3,13 @@
 namespace Drupal\wmentity_overview\FilterStorage;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\wmentity_overview\Annotation\FilterStorage;
+use Drupal\wmentity_overview\Attribute\FilterStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @FilterStorage(
- *     id = "query_param",
- * )
- */
+#[FilterStorage(id: 'query_param')]
 class QueryParamFilterStorage extends FilterStorageBase implements ContainerFactoryPluginInterface
 {
     protected const RESERVED_PARAMS = [

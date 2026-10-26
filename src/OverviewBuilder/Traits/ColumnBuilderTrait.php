@@ -16,7 +16,7 @@ trait ColumnBuilderTrait
 {
     protected function buildLabelColumn(EntityInterface $entity, ?string $rel = 'canonical'): array
     {
-        if ($entity->hasLinkTemplate($rel) && $entity->toUrl($rel)->access()) {
+        if ($rel !== null && $entity->hasLinkTemplate($rel) && $entity->toUrl($rel)->access()) {
             $data = $entity->toLink(null, $rel)->toRenderable();
         } else {
             $data = ['#plain_text' => $entity->label()];

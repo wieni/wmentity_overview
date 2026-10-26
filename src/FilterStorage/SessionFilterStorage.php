@@ -3,15 +3,11 @@
 namespace Drupal\wmentity_overview\FilterStorage;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\wmentity_overview\Annotation\FilterStorage;
+use Drupal\wmentity_overview\Attribute\FilterStorage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * @FilterStorage(
- *     id = "session",
- * )
- */
+#[FilterStorage(id: 'session')]
 class SessionFilterStorage extends FilterStorageBase implements ContainerFactoryPluginInterface
 {
     /** @var SessionInterface */

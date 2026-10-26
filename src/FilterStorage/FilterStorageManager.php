@@ -6,12 +6,16 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\wmentity_overview\Annotation\FilterStorage;
+use Drupal\wmentity_overview\Attribute\FilterStorage as FilterStorageAttribute;
+use Drupal\wmentity_overview\Plugin\Discovery\PrefilteredDiscoveryTrait;
 
 /**
  * @method FilterStorageInterface createInstance($plugin_id, array $configuration = [])
  */
 class FilterStorageManager extends DefaultPluginManager
 {
+    use PrefilteredDiscoveryTrait;
+
     public function __construct(
         \Traversable $namespaces,
         CacheBackendInterface $cacheBackend,
@@ -22,6 +26,7 @@ class FilterStorageManager extends DefaultPluginManager
             $namespaces,
             $moduleHandler,
             FilterStorageInterface::class,
+            FilterStorageAttribute::class,
             FilterStorage::class
         );
         $this->alterInfo('wmentity_overview_filter_storage_info');
