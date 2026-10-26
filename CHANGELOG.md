@@ -3,6 +3,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.13.0] - 2026-10-26
+### Added
+- Drupal 12 support.
+- `#[OverviewBuilder]` and `#[FilterStorage]` attributes. Both plugin managers support attribute discovery, which
+  Drupal 12 requires. Annotated plugins keep working; core reports them as deprecated for Drupal 13.
+
+### Changed
+- The module's own filter storages are declared with the attribute.
+- Attribute discovery only loads the files that mention the plugin type, instead of every class of every module.
+
+### Fixed
+- `OverviewBuilderBase::load()` uses `FetchAs::Associative` instead of an integer fetch mode, which is removed in
+  Drupal 12.
+- PHP 8.5: `buildLabelColumn()` no longer uses a `NULL` link relation as an array key.
+
+### Removed
+- Support for Drupal before 11.4 and PHP before 8.2. The module now requires Drupal `^11.4 || ^12` and PHP 8.2 or
+  higher.
+
 ## [1.12.0] - 2025-08-11
 ### Removed
 - Removed Drupal 10 support
