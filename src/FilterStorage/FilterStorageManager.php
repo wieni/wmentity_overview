@@ -7,12 +7,15 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\wmentity_overview\Annotation\FilterStorage;
 use Drupal\wmentity_overview\Attribute\FilterStorage as FilterStorageAttribute;
+use Drupal\wmentity_overview\Plugin\Discovery\PrefilteredDiscoveryTrait;
 
 /**
  * @method FilterStorageInterface createInstance($plugin_id, array $configuration = [])
  */
 class FilterStorageManager extends DefaultPluginManager
 {
+    use PrefilteredDiscoveryTrait;
+
     public function __construct(
         \Traversable $namespaces,
         CacheBackendInterface $cacheBackend,

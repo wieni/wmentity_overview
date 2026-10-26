@@ -10,6 +10,7 @@ use Drupal\Core\Utility\Error;
 use Drupal\wmentity_overview\Annotation\OverviewBuilder;
 use Drupal\wmentity_overview\Attribute\OverviewBuilder as OverviewBuilderAttribute;
 use Drupal\wmentity_overview\FilterStorage\FilterStorageManager;
+use Drupal\wmentity_overview\Plugin\Discovery\PrefilteredDiscoveryTrait;
 use Drupal\wmentity_overview\Plugin\Factory\OverviewBuilderPluginFactory;
 
 /**
@@ -17,6 +18,8 @@ use Drupal\wmentity_overview\Plugin\Factory\OverviewBuilderPluginFactory;
  */
 class OverviewBuilderManager extends DefaultPluginManager
 {
+    use PrefilteredDiscoveryTrait;
+
     /** @var EntityTypeManagerInterface */
     protected $entityTypeManager;
     /** @var FilterStorageManager */
