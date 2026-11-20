@@ -2,7 +2,6 @@
 
 namespace Drupal\wmentity_overview\OverviewBuilder;
 
-use Drupal\Component\Utility\DeprecationHelper;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\PagerSelectExtender;
 use Drupal\Core\Database\Query\SelectInterface;
@@ -92,18 +91,8 @@ abstract class OverviewBuilderBase extends EntityListBuilder implements Overview
             $sort->orderByHeader($this->buildHeader());
         }
 
-        $result = $q->execute();
-        // The FetchAs enum only exists since Drupal 11.2, where the integer
-        // fetch modes were deprecated (they are removed in Drupal 12).
-        $rows = DeprecationHelper::backwardsCompatibleCall(
-            \Drupal::VERSION,
-            '11.2',
-            static fn () => $result->fetchAll(FetchAs::Associative),
-            static fn () => $result->fetchAll(\PDO::FETCH_ASSOC),
-        );
-
         return array_reduce(
-            $rows,
+            $q->execute()->fetchAll(FetchAs::Associative),
             function (array $entities, array $row) {
                 if ($entity = $this->getEntityByRow($row)) {
                     $key = $this->getRowKeyByEntity($entity);
