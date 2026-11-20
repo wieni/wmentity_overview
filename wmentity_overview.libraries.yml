@@ -28,4 +28,7 @@ tooltip:
     js:
         js/tooltip.js: {}
     dependencies:
+        - core/jquery
+        - core/drupal
+        - core/drupalSettings
         - wmentity_overview/popperjs

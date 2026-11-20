@@ -204,6 +204,12 @@ In case you need access to the entities in your form validate and/or submit hand
 [`ActionPluginFormInterface`](src/Plugin/Action/ActionPluginFormInterface.php) instead. Note that in contrary to 
 `PluginFormInterface` this is a custom interface, only supported by this module.
 
+To process the selected entities in a batch, extend
+[`BatchActionBase`](src/Plugin/Action/BatchActionBase.php) and implement `processEntity()`. If you override
+`execute()`, use the signature `public function execute(?object $entity = null): void`. Drupal 12's
+`ExecutableInterface` and this base class both accept `?object`, and PHP doesn't allow an override to narrow it to,
+for example, `?ContentEntityInterface`.
+
 ### Hooks and events
 #### `hook_entity_overview_alter`
 This hook is only called when using overrides or when using the
@@ -238,7 +244,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EntityOverviewSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events[WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTER][] = ['onAlter'];
 
@@ -291,7 +297,7 @@ class EntityOverviewAlternativesSubscriber implements EventSubscriberInterface
         $this->routeMatch = $routeMatch;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events[WmEntityOverviewEvents::ENTITY_OVERVIEW_ALTERNATIVES_ALTER][] = ['onTaxonomyAlternativesAlter'];
 
