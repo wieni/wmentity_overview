@@ -18,8 +18,16 @@ abstract class BatchActionBase extends EntityActionBase
         batch_set($batch);
     }
 
-    public function execute(?ContentEntityInterface $entity = null): void
+    public function execute(?object $entity = null): void
     {
+        if (!$entity instanceof ContentEntityInterface) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected an instance of %s. Got: %s',
+                ContentEntityInterface::class,
+                get_debug_type($entity)
+            ));
+        }
+
         $this->executeMultiple([$entity]);
     }
 

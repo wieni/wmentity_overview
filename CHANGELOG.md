@@ -3,6 +3,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+### Changed [BC]
+- `BatchActionBase::execute()` accepts `?object` instead of `?ContentEntityInterface`. Drupal 12 declares
+  `ExecutableInterface::execute(?object $object = NULL)`, so the 1.13.0 signature was a fatal error as soon as the
+  class loaded on Drupal 12. Anything that isn't a content entity still throws an `\InvalidArgumentException`.
+  - **Subclasses that override `execute()` must widen their parameter as well**, to
+    `public function execute(?object $entity = null): void`. This applies on Drupal 11.4 too: PHP doesn't let a child
+    class narrow a parameter type, so an override typed `?ContentEntityInterface` is a fatal error against this base
+    class. The widened signature works on both Drupal 11.4 and 12. Subclasses that don't override `execute()` need no
+    change.
+
+### Fixed
+- `OverviewBuilderBase::load()` no longer falls back to an integer fetch mode, which Drupal 12 removed.
+- The `tooltip` library declares its `core/jquery`, `core/drupal` and `core/drupalSettings` dependencies.
+- The event subscriber examples in the README declare `getSubscribedEvents(): array`, which Symfony 8 requires.
+
 ## [1.13.0] - 2026-10-26
 ### Added
 - Drupal 12 support.
